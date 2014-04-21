@@ -34,10 +34,12 @@ func main() {
 		device.WriteByte((byte)(i), 0x00)
 	}
 	time.Sleep(1 * time.Second)
+	fmt.Printf("Write Green\n")
 	for i := 0; i < 16; i += 2 {
 		device.WriteByte((byte)(i), 129)
 	}
 	time.Sleep(1 * time.Second)
+	fmt.Printf("Write Red\n")
 	for i := 0; i < 16; i += 2 {
 		device.WriteByte((byte)(i), 0)
 	}
@@ -45,6 +47,7 @@ func main() {
 		device.WriteByte((byte)(i), 129)
 	}
 	time.Sleep(1 * time.Second)
+	fmt.Printf("Write Yellow\n")
 	for i := 0; i < 16; i += 2 {
 		device.WriteByte((byte)(i), 129)
 	}
