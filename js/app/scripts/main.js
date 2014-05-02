@@ -6,6 +6,24 @@
         var model = _.map(_.range(64), function() {
             return 0;
         });
+
+        function swap(model, row, col) {
+            var a = model[row * 8 + col];
+            model[row * 8 + col] = model[col * 8 + row];
+            model[col * 8 + row] = a;
+        }
+
+        function render(model) {
+            var row, col, color;
+            for (row = 0; row < 8; row++) {
+                var $row = $('tr[data-row="' + row + '"]');
+                for (col = 0; col < 8; col++) {
+                    var $el = $row.find('td[data-col="' + col + '"]');
+                    color = colors[model[row * 8 + col]];
+                    $el.css('background', color);
+                }
+            }
+        }
         console.log(model);
         $('table td').click(function(evt) {
             var $target = $(evt.target);
@@ -26,9 +44,18 @@
             default:
                 color = 0;
             }
-	    model[item] = color;
+            model[item] = color;
             $target.css('background', colors[model[item]]);
             console.log('row: ' + row + ' col: ' + col + ' item: ' + item);
+        });
+        $('.rotate').click(function() {
+            var row, col;
+            for (row = 0; row <= 6; row++) {
+                for (col = row + 1; col <= 7; col++) {
+                    swap(model, row, col);
+                }
+            }
+            render(model);
         });
         window.eightbyeight = {
             model: model
