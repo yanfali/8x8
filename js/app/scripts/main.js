@@ -10,6 +10,21 @@
         var colors = ['none', 'Chartreuse', 'red', 'yellow'];
         var model = resetModel();
 
+        function buildTableBody() {
+            var $tbody = $('tbody');
+            var trTemplate = _.template($('#tr-template').text());
+            var markup = _.reduce([0, 8, 16, 24, 32, 40, 48, 56], function(result, value, index) {
+                result.push(trTemplate({
+                    row: index,
+                    offset: value
+                }));
+		return result;
+            }, []);
+            $tbody.append(markup);
+        }
+
+        buildTableBody();
+
         function swap(model, row, col) {
             var a = model[row * 8 + col];
             model[row * 8 + col] = model[col * 8 + row];
@@ -52,7 +67,7 @@
             console.log('row: ' + row + ' col: ' + col + ' item: ' + item);
         });
         $('.rotate').bind('click', function(evt) {
-	    evt.preventDefault();
+            evt.preventDefault();
             var row, col;
             for (row = 0; row <= 6; row++) {
                 for (col = row + 1; col <= 7; col++) {
@@ -62,7 +77,7 @@
             render(model);
         });
         $('.clear').bind('click', function(evt) {
-	    evt.preventDefault();
+            evt.preventDefault();
             console.log('reset');
             model = resetModel();
             render(model);
