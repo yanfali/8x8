@@ -2,10 +2,13 @@
 (function() {
     'use strict';
     $(function() {
+        function resetModel() {
+            return _.map(_.range(64), function() {
+                return 0;
+            });
+        }
         var colors = ['none', 'Chartreuse', 'red', 'yellow'];
-        var model = _.map(_.range(64), function() {
-            return 0;
-        });
+        var model = resetModel();
 
         function swap(model, row, col) {
             var a = model[row * 8 + col];
@@ -25,7 +28,7 @@
             }
         }
         console.log(model);
-        $('table td').click(function(evt) {
+        $('table td').bind('click', function(evt) {
             var $target = $(evt.target);
             var row = parseInt($target.closest('tr').attr('data-row'), 10);
             var col = parseInt($target.attr('data-col'), 10);
@@ -48,13 +51,20 @@
             $target.css('background', colors[model[item]]);
             console.log('row: ' + row + ' col: ' + col + ' item: ' + item);
         });
-        $('.rotate').click(function() {
+        $('.rotate').bind('click', function(evt) {
+	    evt.preventDefault();
             var row, col;
             for (row = 0; row <= 6; row++) {
                 for (col = row + 1; col <= 7; col++) {
                     swap(model, row, col);
                 }
             }
+            render(model);
+        });
+        $('.clear').bind('click', function(evt) {
+	    evt.preventDefault();
+            console.log('reset');
+            model = resetModel();
             render(model);
         });
         window.eightbyeight = {
