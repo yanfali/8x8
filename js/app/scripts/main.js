@@ -18,18 +18,12 @@
                     row: index,
                     offset: value
                 }));
-		return result;
+                return result;
             }, []);
             $tbody.append(markup);
         }
 
         buildTableBody();
-
-        function swap(model, row, col) {
-            var a = model[row * 8 + col];
-            model[row * 8 + col] = model[col * 8 + row];
-            model[col * 8 + row] = a;
-        }
 
         function render(model) {
             var row, col, color;
@@ -66,16 +60,36 @@
             $target.css('background', colors[model[item]]);
             console.log('row: ' + row + ' col: ' + col + ' item: ' + item);
         });
-        $('.rotate').bind('click', function(evt) {
+
+        function calcPos(x, y) {
+            return y * 8 + x;
+        }
+
+        $('.rotate').bind('click', _.debounce(function(evt) {
             evt.preventDefault();
-            var row, col;
-            for (row = 0; row <= 6; row++) {
-                for (col = row + 1; col <= 7; col++) {
-                    swap(model, row, col);
+            var newModel = [];
+            var p1 = 0,
+                p2 = 0,
+                p3 = 0,
+                p4 = 0;
+            for (var o = 0; o < 4; o++) {
+                var x, y, x1, y1, x2, y2, x3, y3;
+                x = y = y1 = x3 = o;
+	       	x1 = x2 = y2 = y3 = 7 - o;
+                for (var i = 0; i < (8 - o); i++) {
+                    p1 = calcPos(x + i, y);
+                    p2 = calcPos(x1, y1 + i);
+                    p3 = calcPos(x2 - i, y2);
+                    p4 = calcPos(x3, y3 - i);
+                    newModel[p1] = model[p4];
+                    newModel[p2] = model[p1];
+                    newModel[p3] = model[p2];
+                    newModel[p4] = model[p3];
                 }
             }
+            model = newModel;
             render(model);
-        });
+        }, 50));
         $('.clear').bind('click', function(evt) {
             evt.preventDefault();
             console.log('reset');
