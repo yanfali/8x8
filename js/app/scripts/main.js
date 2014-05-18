@@ -14,7 +14,7 @@
         var model = resetModel(width, height);
 
         function buildTableBody(width, height) {
-            var $tbody = $('tbody');
+            var $tbody = $('table.image tbody');
             var trTemplate = _.template($('#tr-template').text());
             var markup = _.reduce(_.range(0, (width * height) - 1, width), function(result, value, index) {
                 result.push(trTemplate({
@@ -40,7 +40,7 @@
             }
         }
 
-        $('table td').bind('click', function(evt) {
+        $('table.image td').bind('click', function(evt) {
             var $target = $(evt.target);
             var row = parseInt($target.closest('tr').attr('data-row'), 10);
             var col = parseInt($target.attr('data-col'), 10);
@@ -116,6 +116,10 @@
             evt.preventDefault();
             model = resetModel(width, height);
             render(model);
+        });
+
+        $('.arrows').bind('click', function(evt) {
+            evt.preventDefault();
         });
 
         window.eightbyeight = {
