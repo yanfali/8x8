@@ -112,11 +112,11 @@
             render(model);
         }, 50));
 
-        $('.erase').bind('click', function(evt) {
+        $('.erase').bind('click', _.debounce(function(evt) {
             evt.preventDefault();
             model = resetModel(width, height);
             render(model);
-        });
+        }, 50));
 
         $('.arrows').bind('click', function(evt) {
             evt.preventDefault();
