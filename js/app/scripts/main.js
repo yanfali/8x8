@@ -68,7 +68,7 @@
             return y * width + x;
         }
 
-        function rotate(fn) {
+        function rotate(model, fn) {
             var newModel = [];
             var x, y, x1, y1, x2, y2, x3, y3, p1, p2, p3, p4;
             var rowEnd = width - 1;
@@ -102,13 +102,13 @@
 
         $('.rotate-right').bind('click', _.debounce(function(evt) {
             evt.preventDefault();
-            model = rotate(clockwise);
+            model = rotate(model, clockwise);
             render(model);
         }, 50));
 
         $('.rotate-left').bind('click', _.debounce(function(evt) {
             evt.preventDefault();
-            model = rotate(counterClockwise);
+            model = rotate(model, counterClockwise);
             render(model);
         }, 50));
 
