@@ -29,6 +29,14 @@ table tbody {
   user-select: none;          
 }
 
+table.image {
+    td {
+	height: 34px;
+	width: 33px;
+        padding: 0;
+    }
+}
+
 table.arrows {
     td {
         padding: 4px;
@@ -37,5 +45,5 @@ table.arrows {
 button {
     height: 3em;
     width: 3em;
-    padding: 0;
+    text-align: center;
 }
