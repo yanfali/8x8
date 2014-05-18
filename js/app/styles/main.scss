@@ -28,3 +28,14 @@ table tbody {
   -o-user-select: none;
   user-select: none;          
 }
+
+table.arrows {
+    td {
+        padding: 4px;
+    }
+}
+button {
+    height: 3em;
+    width: 3em;
+    padding: 0;
+}

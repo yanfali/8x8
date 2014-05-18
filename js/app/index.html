@@ -32,7 +32,7 @@
                 <h1>8x8 Pixel Designer</h1>
             </div>
             <div class="pure-u-1-3">
-                <h3 class="fa fa-info-circle"> About This Image</h3>
+                <h3 class="fa fa-info-circle">&nbsp;About This Image</h3>
                 <form class="pure-form pure-form-stacked">
                     <div class="pure-control-group">
                         <label for="name">Name</label>
@@ -66,31 +66,47 @@
             <div class="pure-u-1-3">
                 <h3>Controls</h3>
                 <form class="pure-form pure-form-stacked">
-                    <button class="rotate-left pure-button fa fa-rotate-left fa-lg" type="button"></button>
-                    <button class="rotate-right pure-button fa fa-rotate-right fa-lg" type="button"></button>
-                    <button class="erase pure-button fa fa-trash-o fa-lg" type="button"></button>
                     <p>
+                        <button class="erase pure-button" type="button">
+                            <i class="fa fa-trash-o fa-lg fa-fw"></i>
+                        </button>
                         <table class="arrows">
                             <tr>
-                                <td>&nbsp;</td>
                                 <td>
-                                    <button data-id="up" class="up pure-button fa fa-arrow-up fa-lg"></button>
+                                    <button class="rotate-left pure-button" type="button">
+                                        <i class="fa fa-rotate-left fa-lg fa-fw"></i>
+                                    </button>
                                 </td>
-                                <td>&nbsp;</td>
+                                <td>
+                                    <button data-id="up" class="up pure-button" type="button">
+                                        <i class="fa fa-arrow-up fa-lg fa-fw"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="rotate-right pure-button" type="button">
+                                        <i class="fa fa-rotate-right fa-lg fa-fw"></i>
+                                    </button>
+                                </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <button data-id="left" class="left pure-button fa fa-arrow-left fa-lg"></button>
+                                    <button data-id="left" class="left pure-button" type="button">
+                                        <i class="fa fa-arrow-left fa-lg fa-fw"></i>
+                                    </button>
                                 </td>
-                                <td>&nbsp;</td>
+                                <td></td>
                                 <td>
-                                    <button data-id="right" class="right pure-button fa fa-arrow-right fa-lg"></button>
+                                    <button data-id="right" class="right pure-button" type="button">
+					<i class="fa fa-arrow-right fa-lg fa-fw"></i>
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <button data-id="down" class="down pure-button fa fa-arrow-down fa-lg"></button>
+                                    <button data-id="down" class="down pure-button" type="button">
+                                        <i class="fa fa-arrow-down fa-lg fa-fw"></i>
+                                    </button>
                                 </td>
                                 <td>&nbsp;</td>
                             </tr>
