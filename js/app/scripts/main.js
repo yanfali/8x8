@@ -3,15 +3,17 @@
     'use strict';
     $(function() {
         var width = 8,
-            height = 8;
+            height = 8,
+            debounceMs = 50,
+            totalCells = width * height;
 
-        function resetModel(width, height) {
-            return _.map(_.range(width * height), function() {
+        function resetModel(totalCells) {
+            return _.map(_.range(totalCells), function() {
                 return 0;
             });
         }
         var colors = ['none', 'Chartreuse', 'red', 'yellow'];
-        var model = resetModel(width, height);
+        var model = resetModel(totalCells);
 
         function buildTableBody(width, height) {
             var $tbody = $('table.image tbody');
@@ -100,27 +102,87 @@
             newModel[pos[3]] = oldModel[pos[0]];
         }
 
+        function shiftModel(model, fn) {
+            var row;
+            var newModel = [];
+            for (var i = fn.startRow, j = 0; j < width; i++, j++) {
+                row = fn(model, i);
+                newModel.push(row);
+            }
+            return _.flatten(newModel);
+        }
+
+        function shiftUp(model, offset) {
+            var start = (offset * width) % totalCells,
+                end = start + width;
+            return model.slice(start, end);
+        }
+        shiftUp.startRow = 1;
+
+        function shiftDown(model, offset) {
+            var start = (offset * width) % totalCells,
+                end = start + width;
+            return model.slice(start, end);
+        }
+        shiftDown.startRow = 7;
+
+        function shiftLeft(model, offset) {
+            var start = (offset * width) % totalCells,
+                end = start + width;
+            var row = model.slice(start + 1, end);
+            row[7] = model.slice(start, start + 1);
+            return row;
+        }
+        shiftLeft.startRow = 0;
+
+        function shiftRight(model, offset) {
+            var start = (offset * width) % totalCells,
+                end = start + width;
+            var row = model.slice(end - 1, end).concat(model.slice(start, end - 1));
+            return row;
+        }
+        shiftRight.startRow = 0;
+
         $('.rotate-right').bind('click', _.debounce(function(evt) {
             evt.preventDefault();
             model = rotate(model, clockwise);
             render(model);
-        }, 50));
+        }, debounceMs));
 
         $('.rotate-left').bind('click', _.debounce(function(evt) {
             evt.preventDefault();
             model = rotate(model, counterClockwise);
             render(model);
-        }, 50));
+        }, debounceMs));
 
         $('.erase').bind('click', _.debounce(function(evt) {
             evt.preventDefault();
-            model = resetModel(width, height);
+            model = resetModel(totalCells);
             render(model);
-        }, 50));
+        }, debounceMs));
 
-        $('.arrows').bind('click', function(evt) {
+        $('.up').bind('click', _.debounce(function(evt) {
             evt.preventDefault();
-        });
+            model = shiftModel(model, shiftUp);
+            render(model);
+        }, debounceMs));
+        $('.down').bind('click', _.debounce(function(evt) {
+            evt.preventDefault();
+            model = shiftModel(model, shiftDown);
+            render(model);
+        }, debounceMs));
+
+        $('.left').bind('click', _.debounce(function(evt) {
+            evt.preventDefault();
+            model = shiftModel(model, shiftLeft);
+            render(model);
+        }, debounceMs));
+
+        $('.right').bind('click', _.debounce(function(evt) {
+            evt.preventDefault();
+            model = shiftModel(model, shiftRight);
+            render(model);
+        }, debounceMs));
 
         window.eightbyeight = {
             model: model
