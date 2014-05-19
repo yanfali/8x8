@@ -143,49 +143,26 @@
         }
         shiftRight.startRow = 0;
 
-        $('.rotate-right').bind('click', _.debounce(function(evt) {
-            evt.preventDefault();
-            model = rotate(model, clockwise);
-            render(model);
-        }, debounceMs));
+        function makeCommand(baseFn, actionFn) {
+            return _.debounce(function(evt) {
+                evt.preventDefault();
+                model = baseFn(model, actionFn);
+                render(model);
+            }, debounceMs);
+        }
 
-        $('.rotate-left').bind('click', _.debounce(function(evt) {
-            evt.preventDefault();
-            model = rotate(model, counterClockwise);
-            render(model);
-        }, debounceMs));
+        $('.erase').bind('click', makeCommand(_.partial(resetModel, totalCells)));
 
-        $('.erase').bind('click', _.debounce(function(evt) {
-            evt.preventDefault();
-            model = resetModel(totalCells);
-            render(model);
-        }, debounceMs));
+        $('.rotate-right').bind('click', makeCommand(rotate, clockwise));
+        $('.rotate-left').bind('click', makeCommand(rotate, counterClockwise));
 
-        $('.up').bind('click', _.debounce(function(evt) {
-            evt.preventDefault();
-            model = shiftModel(model, shiftUp);
-            render(model);
-        }, debounceMs));
-        $('.down').bind('click', _.debounce(function(evt) {
-            evt.preventDefault();
-            model = shiftModel(model, shiftDown);
-            render(model);
-        }, debounceMs));
-
-        $('.left').bind('click', _.debounce(function(evt) {
-            evt.preventDefault();
-            model = shiftModel(model, shiftLeft);
-            render(model);
-        }, debounceMs));
-
-        $('.right').bind('click', _.debounce(function(evt) {
-            evt.preventDefault();
-            model = shiftModel(model, shiftRight);
-            render(model);
-        }, debounceMs));
+        $('.up').bind('click', makeCommand(shiftModel, shiftUp));
+        $('.down').bind('click', makeCommand(shiftModel, shiftDown));
+        $('.left').bind('click', makeCommand(shiftModel, shiftLeft));
+        $('.right').bind('click', makeCommand(shiftModel, shiftRight));
 
         window.eightbyeight = {
             model: model
         };
-    });
-})();
+        });
+    })();
