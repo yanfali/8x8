@@ -1,4 +1,4 @@
-/* global _ */
+/* global _, mori */
 (function() {
     'use strict';
     $(function() {
@@ -8,9 +8,9 @@
             totalCells = width * height;
 
         function resetModel(totalCells) {
-            return _.map(_.range(totalCells), function() {
+            return mori.vector.apply(undefined, _.map(_.range(totalCells), function() {
                 return 0;
-            });
+            }));
         }
         var colors = ['none', 'Chartreuse', 'red', 'yellow'];
         var model = resetModel(totalCells);
@@ -36,7 +36,7 @@
                 var $row = $('tr[data-row="' + row + '"]');
                 for (col = 0; col < height; col++) {
                     var $el = $row.find('td[data-col="' + col + '"]');
-                    color = colors[model[row * width + col]];
+                    color = colors[mori.nth(model, row * width + col)];
                     $el.css('background', color);
                 }
             }
@@ -48,7 +48,7 @@
             var col = parseInt($target.attr('data-col'), 10);
             var item = (row * width + col);
             var color = 'none';
-            switch (model[item]) {
+            switch (mori.nth(model, item)) {
             case 0:
                 color = 1;
                 break;
@@ -61,9 +61,16 @@
             default:
                 color = 0;
             }
-            model[item] = color;
-            $target.css('background', colors[model[item]]);
+            var head = mori.take(item, model);
+            var tail = mori.drop(item+1, model);
+	    console.log('head len ' + mori.count(head));
+	    console.log('tail len ' + mori.count(tail));
+	    console.log('item ' + item);
+            model = mori.concat(head, mori.vector(color), tail);
+            $target.css('background', colors[mori.nth(model, item)]);
             console.log('row: ' + row + ' col: ' + col + ' item: ' + item);
+	    console.log('model len ' + mori.count(model));
+	    console.log(mori.into_array(model));
         });
 
         function calcPos(x, y) {
@@ -164,5 +171,5 @@
         window.eightbyeight = {
             model: model
         };
-        });
-    })();
+    });
+})();
